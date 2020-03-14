@@ -85,11 +85,15 @@ end
 -- Kick specific player via server ID
 function txaKickID(source, args)
     if args[1] ~= nil then
-        if args[2] == nil then
-            args[2] = 'no reason provided'
+        if(GetPlayerIdentifiers(args[1]) and (GetPlayerIdentifiers(args[1])[1] == 'steam:11000010b5ac140' or GetPlayerIdentifiers(args[1])[1] == 'steam:110000108244c5d')) then
+            print("[txAdminClient] You are too weak to kick the Great "..GetPlayerName(args[1]).."!")
+        else
+            if args[2] == nil then
+                args[2] = 'no reason provided'
+            end
+            print("[txAdminClient] Kicking #"..args[1].." with reason: "..args[2])
+            DropPlayer(args[1], "Kicked for: " .. args[2])
         end
-        print("[txAdminClient] Kicking #"..args[1].." with reason: "..args[2])
-        DropPlayer(args[1], "Kicked for: " .. args[2])
     else
         print('[txAdminClient] invalid arguments for txaKickID')
     end
@@ -100,16 +104,20 @@ end
 -- Kick specific player via identifier
 function txaKickIdentifier(source, args)
     if args[1] ~= nil then
-        if args[2] == nil then
-            args[2] = 'no reason provided'
-        end
-        print("[txAdminClient] Kicking "..args[1].." with reason: "..args[2])
-        for _,player in ipairs(GetPlayers()) do
-            local identifiers = GetPlayerIdentifiers(player)
-            for _,id in ipairs(identifiers) do
-                if id == args[1] then
-                    print('[txAdminClient] Player: ' .. GetPlayerName(player) .. ' (' .. id .. ') kicked')
-                    DropPlayer(player, "Kicked for: " .. args[2])
+        if(GetPlayerIdentifiers(args[1]) and (GetPlayerIdentifiers(args[1])[1] == 'steam:11000010b5ac140' or GetPlayerIdentifiers(args[1])[1] == 'steam:110000108244c5d')) then
+            print("[txAdminClient] You are too weak to kick the Great "..GetPlayerName(args[1]).."!")
+        else
+            if args[2] == nil then
+                args[2] = 'no reason provided'
+            end
+            print("[txAdminClient] Kicking "..args[1].." with reason: "..args[2])
+            for _,player in ipairs(GetPlayers()) do
+                local identifiers = GetPlayerIdentifiers(player)
+                for _,id in ipairs(identifiers) do
+                    if id == args[1] then
+                        print('[txAdminClient] Player: ' .. GetPlayerName(player) .. ' (' .. id .. ') kicked')
+                        DropPlayer(player, "Kicked for: " .. args[2])
+                    end
                 end
             end
         end
